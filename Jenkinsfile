@@ -10,5 +10,14 @@ pipeline{
                 sh 'mvn clean deploy'
             }
         }
+        stage('SonarQube analysis') {
+            environment{
+                scannerHome = tool 'TeamProject-SonarQube-Scanner';
+            }
+            steps{
+                withSonarQubeEnv('TeamProject-SonarQube-Server') { 
+                 sh "${scannerHome}/bin/sonar-scanner"}
+            }
+        }
     }
 }
