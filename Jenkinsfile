@@ -1,4 +1,6 @@
- def registry = 'https://rajayanamala.jfrog.io/'
+def registry = 'https://rajayanamala.jfrog.io/'
+def imageName = 'valaxy01.jfrog.io/teamproject-docker-local/TeamProject'
+def version   = '2.1.2'
 pipeline{
     agent{
         node{
@@ -63,9 +65,29 @@ pipeline{
                      buildInfo.env.collect()
                      server.publishBuildInfo(buildInfo)
                      echo '<--------------- Jar Publish Ended --------------->'  
-            
+                }
+            }   
+        } 
+        stage(" Docker Build ") {
+            steps {
+                script {
+                    echo '<--------------- Docker Build Started --------------->'
+                    app = docker.build(imageName+":"+version)
+                    echo '<--------------- Docker Build Ends --------------->'
+                }
             }
-        }   
-    }   
-   }
+        }
+
+        stage (" Docker Publish "){
+            steps {
+                script {
+                    echo '<--------------- Docker Publish Started --------------->'  
+                    docker.withRegistry(registry, 'Jfrog-Credentials'){
+                    app.push()
+                    echo '<--------------- Docker Publish Ended --------------->'  
+                    }    
+                }
+            }
+        }  
+    }
 }
