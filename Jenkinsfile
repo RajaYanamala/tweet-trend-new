@@ -1,5 +1,5 @@
 def registry = 'https://rajayanamala.jfrog.io/'
-def imageName = 'valaxy01.jfrog.io/teamproject-docker-local/TeamProject'
+def imageName = 'rajayanamala.jfrog.io/teamproject-docker-local/TeamProject'
 def version   = '2.1.2'
 pipeline{
     agent{
